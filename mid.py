@@ -13,11 +13,10 @@ bl_info = {
     "category": "Material",
 }
 
+import colorsys
 import bpy
 from bpy.props import (PointerProperty, BoolProperty, FloatVectorProperty,
                        IntProperty, StringProperty, EnumProperty)
-import colorsys
-import random
 
 
 class Options(bpy.types.PropertyGroup):
@@ -26,7 +25,7 @@ class Options(bpy.types.PropertyGroup):
                            description="Image used when creating MID material"
                                        " with an image texture")
 
-
+        
 # Panels
 
 
