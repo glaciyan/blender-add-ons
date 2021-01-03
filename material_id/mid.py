@@ -9,7 +9,7 @@ bl_info = {
     "blender": (2, 83, 0),
     "location": "N Panel -> Material ID",
     "warning": "",
-    "tracker_url": "https://github.com/slimetsp/bl_mid/issues",
+    "tracker_url": "https://github.com/slimetsp/blender-add-ons/issues",
     "category": "Material",
 }
 
@@ -47,87 +47,8 @@ class MID_PT_ImagePanel(bpy.types.Panel):
     bl_parent_id = "MID_PT_MAINPANEL"
 
     def draw(self, context):
-        layout = self.layout
-        scene = context.scene
+        layout.template_ID
 
-        layout.prop(scene.mid_options, "image", text="")
-
-        split = layout.split(align=True)
-        split.operator("smlmid.new_image",
-                       text="New",
-                       text_ctxt='',
-                       translate=True,
-                       icon='ADD')
-        split.operator("slmid.open_image",
-                       text="Open...",
-                       text_ctxt='',
-                       translate=True,
-                       icon='FILE_FOLDER')
-
-    class NewImage(bpy.types.Operator):
-        """Create a new image"""
-        bl_idname = "smlmid.new_image"
-        bl_label = "New Image"
-        bl_description = "Create a new image"
-
-        name: StringProperty(name="Name",
-                             description="Name of the new file",
-                             default="Untitled")
-
-        resolution: IntProperty(name="Resolution",
-                                description="Image resolution",
-                                default=2048,
-                                min=1,
-                                max=2147483647,
-                                soft_min=1,
-                                soft_max=16384,
-                                subtype='PIXEL')
-
-        alpha: BoolProperty(name="Alpha", default=True)
-
-        color: FloatVectorProperty(name="Color",
-                                   size=4,
-                                   min=0,
-                                   max=1,
-                                   subtype='COLOR',
-                                   default=(0.0, 0.0, 0.0, 1.0))
-
-        float32: BoolProperty(name="32 Bit Float")
-
-        def execute(self, context):
-            bpy.ops.image.new(name=self.name,
-                              width=self.resolution,
-                              height=self.resolution,
-                              color=self.color,
-                              alpha=self.alpha,
-                              generated_type='BLANK',
-                              float=self.float32,
-                              use_stereo_3d=False,
-                              tiled=False)
-
-            context.scene.mid_options.image = bpy.data.images[self.name]
-            return {'FINISHED'}
-
-        def invoke(self, context, event):
-            return context.window_manager.invoke_props_dialog(self)
-
-    class OpenImage(bpy.types.Operator):
-        """Open Image"""
-        bl_idname = "slmid.open_image"
-        bl_label = "Open Image"
-        bl_description = "Open an image"
-        filepath: StringProperty(subtype='FILE_PATH')
-        filename: StringProperty(subtype='FILE_NAME')
-
-        def execute(self, context):
-            bpy.ops.image.open(filepath=self.filepath)
-            print(self.filename)
-            context.scene.mid_options.image = bpy.data.images[self.filename]
-            return {'FINISHED'}
-
-        def invoke(self, context, event):
-            context.window_manager.fileselect_add(self)
-            return {'RUNNING_MODAL'}
 
 # End of Panels
 
